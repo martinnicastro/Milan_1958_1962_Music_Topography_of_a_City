@@ -1,0 +1,28 @@
+{
+    "id": "A2C93D16",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1671706073899.0,
+    "source_on_save": false,
+    "relative_order": 7,
+    "properties": {
+        "id": "5aff9af8baee483f9cee6be007216b09",
+        "name": "Dancing",
+        "title": "Dancing",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1404556146192,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1671706073899,
+    "read_only": false,
+    "read_only_alternatives": []
+}

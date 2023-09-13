@@ -1,0 +1,345 @@
+##install.packages("leaflet")
+##install.packages("sp")
+##install.packages("rgdal")
+##install.packages("RColorBrewer")
+##install.packages("leaflet.extras")
+##install.packages("leaflet.minicharts")
+##install.packages("htmlwidgets")
+##install.packages("raster")
+##install.packages("mapview")
+##install.packages("leafem")
+
+## Call the libraries
+library(leaflet)
+library(sp)
+library(rgdal)
+library(RColorBrewer)
+library(leaflet.extras)
+library(leaflet.minicharts)
+library(leaflegend)
+library(htmlwidgets)
+library(raster)
+library(mapview)
+library(leafem)
+library(leafpop)
+library(sf)
+library(htmltools)
+library(magrittr)
+
+## PART 1 - IN THIS PART THE CODE READS THE FILES AND ATTRIBUTES COLORS AND ICONS TO ELEMENTS
+
+## Shapefile night club
+Night_Club <- readOGR('Night_Club/Night_Club.shp')
+
+## Shapefile cinema
+Cinema <- readOGR('Cinema/Cinema.shp')
+
+## Shapefile teatri
+Teatri <- readOGR('Teatri/Teatri.shp')
+
+## Shapefile whisky
+Whisky <- readOGR('Whisky/Whisky.shp')
+
+## Shapefile dancing
+Dancing <- readOGR('Dancing/Dancing.shp')
+
+
+## Palette night club
+palette_night_club <- colorFactor(palette = c("#f9a515"), domain = Night_Club$tipologia)
+
+## Palette cinema
+palette_cinema <- colorFactor(palette = c("green"), domain = Cinema$tipologia)
+
+
+## Palette teatri
+palette_teatri <- colorFactor(palette = c("#fd0090", "#0090fd","#0012fd", "#fd0012",  "#900C3F" ),  domain = Teatri$tipologia)
+
+## Palette whisky
+palette_whisky <- colorFactor(palette = c("darkorchid"), domain = Whisky$tipologia)
+
+## Palette dancing
+palette_dancing <- colorFactor(palette = c("#f9ef15"), domain = Dancing$tipologia)
+
+##totale csv
+venues_data <- read.csv("venues.csv")
+
+##totale html popup
+venues_content <- paste(sep = "<br/>",
+                        paste0("<div class='leaflet-popup-scrolled' style='max-width:600px;max-height:400px'>"),
+                        paste0("<b>", "Nome: ", "</b>", venues_data$Nome),
+                        paste0("<b>", "Organizzatore: ", "</b>", venues_data$Organizzatore),
+                        paste0("<b>", "Indirizzo: ", "</b>", venues_data$Indirizzo),
+                        paste0("<b>", "Tipologia: ", "</b>", venues_data$Tipologia),
+                        paste0("<b>", "Eventi: ", "</b>", venues_data$Eventi),
+                        paste0("<b>", "Capienza: ", "</b>", venues_data$Capienza),
+                        paste0(venues_data$Thumbnails),
+                        paste0(venues_data$Immagini_originali),
+                        paste0("<b>", "Data immagine: ", "</b>", venues_data$Data_foto),
+                        paste0("</div>"))
+## Videomap csv
+
+video_data <- read.csv("video_map.csv")
+
+
+##icon list total
+icons_video <- awesomeIconList (Bruno_Canino = makeAwesomeIcon (icon = 'facetime-video', markerColor = 'blue'), 
+                                Enrico_Intra = makeAwesomeIcon (icon = 'facetime-video', markerColor = 'red'),
+                                Gaetano_Liguori = makeAwesomeIcon (icon = 'facetime-video', markerColor = 'orange'),
+                                Giacomo_Manzoni = makeAwesomeIcon (icon = 'facetime-video', markerColor = 'darkgreen'),
+                                Gian_Franco_Reverberi = makeAwesomeIcon (icon = 'facetime-video', markerColor = 'pink'),
+                                Lino_Patruno = makeAwesomeIcon (icon = 'facetime-video', markerColor = 'beige'),
+                                Natale_Massara = makeAwesomeIcon (icon = 'facetime-video', markerColor = 'purple'),
+                                Paolo_Tomelleri = makeAwesomeIcon(icon = 'facetime-video', markerColor = 'gray'))
+                                
+
+
+
+## videomap popup
+
+content_video <- paste(sep = "<br/>",
+                       paste0("<div class='leaflet-popup-scrolled' style='max-width:700px;max-height:500px'>"),
+                       paste0("<b>", "Luogo: ", "</b>", video_data$Nome),
+                       paste0("<b>", "Intervistato: ", "</b>", video_data$Intervistato),
+                       paste0("<b>", "Data intervista: ", "</b>", video_data$Data_intervista),
+                       paste0(video_data$Video_originale),
+                       paste0(video_data$Video_player),
+                       paste0("</div>"))
+
+
+
+##Events palette
+palette_venues <- colorNumeric("YlGn", venues_data$Eventi)
+##Capacity palette
+palette_capacity <- colorNumeric("YlOrRd", domain = venues_data$Capienza)
+
+
+
+
+
+
+## PART 2 - IN THIS PART THE CODE ADDS ELEMENT ON THE MAP LIKE POLYGONS, POINTS AND IMAGES.
+
+m <- leaflet(options = leafletOptions(preferCanvas = FALSE)) %>%
+  ## Basemap
+  ##addTiles(tile)        %>%
+  addProviderTiles(providers$CartoDB.Positron, options = providerTileOptions(
+    updateWhenZooming = TRUE,      
+    updateWhenIdle = TRUE)      )  %>%
+  
+  
+  
+  ## Add a zoom reset button
+  addResetMapButton() %>%
+  
+  ## Add a coordinates reader
+  leafem::addMouseCoordinates() %>%
+  ## define the view
+  setView(lng = 9.18835, 
+          lat = 45.4610, 
+          zoom = 13 ) %>%
+  
+  
+  
+  
+  ##Polygons cinema_2
+  addPolygons(data = Cinema,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_cinema(tipologia),
+              group = "Totale",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons teatri_2
+  addPolygons(data = Teatri,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_teatri(tipologia),
+              group = "Totale",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons whisky_2
+  addPolygons(data = Whisky,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_whisky(tipologia),
+              group = "Totale",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons dancing_2
+  addPolygons(data = Dancing,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_dancing(tipologia),
+              group = "Totale",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons Night_2 
+  addPolygons(data = Night_Club,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_night_club(tipologia),
+              group = "Totale",
+              label = ~paste(nome)) %>%
+
+  
+  ## Markers video
+  addAwesomeMarkers(data = video_data, 
+                    lng = ~Longitude,
+                    lat = ~Latitude,
+                    icon = ~icons_video[Intervistato_icon],
+                    popup = c(content_video), 
+                    group = "Videomap",
+                    options = popupOptions(maxWidth = 700, maxHeight = 350),
+                    label = ~paste(video_data$Intervistato),
+                    clusterOptions = markerClusterOptions()
+  )%>%
+  
+ 
+  
+  ## Circles markers events
+  addCircleMarkers(data = venues_data, 
+                   lng = ~Longitude,
+                   lat = ~Latitude,
+                   fillColor = ~palette_venues(Eventi),
+                   color = "black",
+                   weight = 1,
+                   radius = ~sqrt(venues_data$Eventi),
+                   stroke = TRUE,
+                   fillOpacity = 0.5,
+                   group = "Events",
+                   label = ~paste(venues_data$Eventi 
+                   )) %>%
+  
+  ## Circle markers capacity
+  addCircleMarkers(data = venues_data, 
+                   lng = ~Longitude,
+                   lat = ~Latitude,
+                   fillColor = ~palette_capacity(Capienza),
+                   color = "black",
+                   weight = 1,
+                   radius = ~sqrt(venues_data$Capienza) - 10,
+                   stroke = TRUE,
+                   fillOpacity = 0.5,
+                   group = "Capacity",
+                   label = ~paste(venues_data$Capienza 
+                   )) %>%
+  
+  
+  
+  ##Legend nights
+  addLegend("bottomleft", 
+            pal = palette_night_club, 
+            values = Night_Club$tipologia,
+            title = "Night Club:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Night Club") %>%
+  
+  ##Legend teatri
+  addLegend("bottomleft", 
+            pal = palette_teatri, 
+            values = Teatri$tipologia,
+            title = "Teatri:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Totale") %>%
+  
+  ##Legend cinema
+  addLegend("bottomleft", 
+            pal = palette_cinema, 
+            values = Cinema$tipologia,
+            title = "Cinema:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Totale") %>%
+  
+  
+  ##Legend whisky
+  addLegend("bottomleft", 
+            pal = palette_whisky, 
+            values = Whisky$tipologia,
+            title = "Whisky a go-go:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Totale") %>%
+  
+  ##Legend dancing
+  addLegend("bottomleft", 
+            pal = palette_dancing, 
+            values = Dancing$tipologia,
+            title = "Dancing:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Totale") %>%
+  
+  ##Legend events
+  addLegend("bottomleft", 
+            pal = palette_venues, 
+            values = venues_data$Eventi,
+            title = "Events:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Events") %>%
+  
+  
+  ##Legend capacity
+  addLegend("bottomleft", 
+            pal = palette_capacity, 
+            values = venues_data$Eventi,
+            title = "Capacity:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Capacity") %>%
+  
+  addLegendAwesomeIcon(
+    iconSet = icons_video,
+    orientation = 'vertical',
+    title = htmltools::tags$div(
+      style = 'font-size: 14px;',
+      'Intervistati:'),
+    labelStyle = 'font-size: 12px;',
+    position = 'bottomright',
+    group = "Videomap",
+    marker = TRUE) %>%
+  
+  
+ 
+  
+  ## Add a legend with the credits
+  addLegend("topright", 
+            
+            colors = c("trasparent"),
+            labels=c("Martin Nicastro - nicastromartin@gmail.com"),
+            
+            title="Milan 1958-1962: Music Topography of a Forgotten City") %>%
+  
+  
+  ## PART 3 - IN THIS PART THE CODE MANAGE THE LAYERS' SELECTOR
+  
+  ## Add the layer selector which allows you to navigate the possibilities offered by this map
+  
+  addLayersControl(baseGroups = c("Totale",
+                                  "Empty layer"),
+                   
+                   overlayGroups = c(  "Events",
+                                       "Capacity",
+                                       "Videomap"),
+                   
+                   
+                   options = layersControlOptions(collapsed = TRUE)) %>%
+  
+  ## Hide the layers that the users can choose as they like
+  hideGroup(c("Events",
+              "Capacity"))
+
+
+
+
+
+## Show the map  
+m

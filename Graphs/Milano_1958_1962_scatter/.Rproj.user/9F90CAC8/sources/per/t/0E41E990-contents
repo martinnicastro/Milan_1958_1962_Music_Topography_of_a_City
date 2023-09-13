@@ -1,0 +1,61 @@
+# library
+library(ggplot2)
+library(plotly)
+
+# Dati forniti
+dati <- read.csv("data/scatter_teatri_genres.csv")
+
+# Definizione dei colori delle categorie
+colori_categorie <- c("#F8766D", "#00BFC4", "#7CAE00", "#C77CFF")
+
+# Classic plot
+p <- ggplot(dati, aes(x = Luogo, y = Genere, color = "blue", size = 1 )) +
+  geom_point() +
+  theme(legend.position = "none") +
+  labs(title = NULL, x = NULL, y = NULL)
+
+# Convertire il grafico in un oggetto plotly
+p_interattivo <- ggplotly(p)
+
+# Aggiungere la legenda dei colori delle categorie
+p_interattivo <- p_interattivo %>%
+  layout(
+    legend = list(
+      x = 1.02,
+      y = 0.5,
+      bgcolor = "white",
+      bordercolor = "white",
+      borderwidth = 1,
+      itemsizing = "constant",
+      traceorder = "normal"
+    ),
+    annotations = list(
+      list(
+        x = 1.02,
+        y = 0.5,
+        text = "Legenda delle Categorie:",
+        xref = "paper",
+        yref = "paper",
+        xanchor = "left",
+        yanchor = "middle",
+        showarrow = FALSE,
+        font = list(color = "black", size = 12, face = "bold")
+      ),
+      lapply(1:length(levels(dati$Categoria)), function(i) {
+        list(
+          x = 1.02,
+          y = 0.47 - (i * 0.03),
+          text = levels(dati$Categoria)[i],
+          xref = "paper",
+          yref = "paper",
+          xanchor = "left",
+          yanchor = "middle",
+          showarrow = FALSE,
+          font = list(color = colori_categorie[i], size = 11)
+        )
+      })
+    )
+  )
+
+# Visualizzare il grafico interattivo
+p_interattivo

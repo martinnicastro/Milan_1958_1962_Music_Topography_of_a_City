@@ -1,0 +1,679 @@
+#install.packages('MASS')
+
+
+
+
+library(shiny)
+library(shinydashboard)
+library(shinyjs)
+library(leaflegend)
+library(RColorBrewer)
+library(tidyverse)
+library(DT)
+library(leaflet)
+library(shinyWidgets)
+library(htmlwidgets)
+library(shinyTime)
+library(lubridate)
+library(rgdal)
+library(rmapshaper)
+library(sf)
+library(dplyr)
+library(shiny.i18n)
+
+
+source('utils/func_trans.R')
+
+
+# file with translations
+i18n <- Translator$new(translation_csvs_path = "translations")
+
+# lang selection
+i18n$set_translation_language("en")
+
+
+# Setting up the data structures
+# Most operations are done on the "venue_df_new" data.frame.
+
+## Data shp
+price_data <- read.csv("data/prices_2018.csv")
+
+## Shapefile test
+layer_test_2 <- st_read('test_3/Combined.shp')
+
+## Simplify shp (edit for performances issues)
+layer_test_2_simp <- ms_simplify(layer_test_2,
+                                 keep = 0.10)
+
+## Shp and csv merge
+
+layer_test_2_simp_merge <- left_join(price_data,layer_test_2_simp,by="lsoa11cd")
+
+layer_test_2_simp_merge <- sf::st_as_sf(layer_test_2_simp_merge)
+
+#Label Polygons_old
+
+label_LSOA <- sprintf(
+  "LSOA: <b>%s</b>",
+  layer_test_2_simp_merge$lsoa11nm
+) %>% lapply(htmltools::HTML)
+
+
+label_price <- sprintf( i18n$t("LSOA: <b>%s</b><br/>Median Price: <b>%1.0f</b> &#163"),
+                        layer_test_2_simp_merge$lsoa11nm, layer_test_2_simp_merge$median_18Q4
+) %>% lapply(htmltools::HTML)
+
+label_count <- sprintf( i18n$t("LSOA: <b>%s</b><br/>Transactions: <b>%1.0f</b>"),
+                        layer_test_2_simp_merge$lsoa11nm, layer_test_2_simp_merge$count_18Q4
+) %>% lapply(htmltools::HTML)
+
+
+## Palette median
+palette_median <- colorNumeric("YlOrRd", domain = layer_test_2_simp_merge$median_18Q4)
+
+## Palette count
+palette_count <- colorNumeric("YlGn", domain = layer_test_2_simp_merge$count_18Q4)
+
+
+venue_df_new <- read_rds('data/Lpool_Venues_ok.rds')
+#venue_df_new$train_dist_short <- round(venue_df_new$Distance.to.station, digits = 2)
+venue_df_new$str <- paste(venue_df_new$venue_name, venue_df_new$venue_add_one,
+                          venue_df_new$venue_add_two,  venue_df_new$venue_pcode, sep=' - ')
+
+venue_df_new$Year_Op <- sapply(venue_df_new$`Year.Venue.Opened`, function(x){
+  idx <- regexpr("\\d{4}",x, perl=T)
+  substr(x, idx, idx+3)
+})
+
+# temp fix for opening years
+current_year <- format(Sys.Date(),'%Y')
+
+venue_df_new$Year_Op[which(is.na(venue_df_new$Year_Op))] <- current_year
+venue_df_new$Year_Op <- as.numeric(venue_df_new$Year_Op)
+
+current_year <- as.integer(current_year)
+
+venue_df_new$Year_Cl <- venue_df_new$`Year.Venue.Closed`
+venue_df_new$Year_Cl[is.na(venue_df_new$Year_Cl)] <- as.numeric(current_year + 1)
+
+
+
+# Replace venue type for translation
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Arena / Exhibition Centre"] <- i18n$t("Arena / Exhibition Centre")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Arts Centre / Gallery"] <- i18n$t("Arts Centre / Gallery")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Concert Hall / Auditorium"] <- i18n$t("Concert Hall / Auditorium")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Church / Place of Worship"] <- i18n$t("Church / Place of Worship")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Holiday Camp"] <- i18n$t("Holiday Camp")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Hotel / Restaurant"] <- i18n$t("Hotel / Restaurant")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Large Venue"] <- i18n$t("Large Venue")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Medium Venue"] <- i18n$t("Medium Venue")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Nightclub"] <- i18n$t("Nightclub")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Other"] <- i18n$t("Other")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Outdoor Green Space"] <- i18n$t("Outdoor Green Space")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Outdoor Urban Space"] <- i18n$t("Outdoor Urban Space")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Pub / Bar"] <- i18n$t("Pub / Bar")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Recording Studio"] <- i18n$t("Recording Studio")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Rehearsal Studio"] <- i18n$t("Rehearsal Studio")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Small Venue"] <- i18n$t("Small Venue")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Social / Student"] <- i18n$t("Social / Student")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Stadium"] <- i18n$t("Stadium")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Sports Facility"] <- i18n$t("Sports Facility")
+venue_df_new$ven_type_sim[venue_df_new$ven_type_sim == "Theatre / Opera House"] <- i18n$t("Theatre / Opera House")
+
+
+
+#venue_df_new$Year_Op <- sapply(venue_df_new$`Year_Venue_Opened`, function(x){
+  #idx <- regexpr("\\d{4}",x, perl=T)
+  #substr(x, idx, idx+3)
+#})
+
+
+# Filtering out venues that have a value in the `Year venue closed` column
+venue_df_new <- venue_df_new[is.na(venue_df_new$`Year.Venue.Closed`),]
+
+# temp fix
+#venue_df_new$Year_Op[which(is.na(venue_df_new$Year_Op))] <- "2022"
+#venue_df_new$Year_Op <- as.numeric(venue_df_new$Year_Op)
+
+# Parsing venue capacity
+# Where more than one number present pick the larger
+venue_df_new$venue_capacity_cat <-	sapply(venue_df_new$capacity, function(x){
+  if (is.na(x)) return('NA')
+  if (x<100) return('0-99')
+  else if (x<200) return('100-199')
+  else if (x<300) return('200-299')
+  else if (x<500) return('300-499')
+  else if (x<1000) return('500-999')
+  else if (x<3000) return('1000-2999')  
+  else if (x<5000) return('3000-4999')  
+  else if (x<10000) return('5000-9999')  
+  else return('10000+')
+})
+
+
+# Setting up venue types
+
+pal <- colorFactor(
+  # # icon paletter (this is fixed due to limited marker color choices; they are in alfabethical order: adjust based on venue types present in the iteration and on language)
+  # palette eng
+  palette <- c("#5599F0", "#B818AF", "#F6C569", "#5A7949", "#53A328", "#716A6A", "#EE9818", "#29D5D6", "#DEDEDE", "#BAF6B1", "black", "#620808", "#45988B", "#072464", "#FFA8F7", "#D41E1E"),
+  # colorblind-frendly palette using grey
+  #palette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7"),
+  # another colorblind-friendly palette
+  # palette <- brewer.pal(length(unique(venue_df_new$ven_type_sim)),"Paired"),
+  domain <- venue_df_new$ven_type_sim
+)
+
+
+##icon list 
+total_icons <- awesomeIconList (Arena_Exhibition_Centre = makeAwesomeIcon (icon = 'user', markerColor = 'blue'),
+                                Arts_Centre_Gallery = makeAwesomeIcon (icon = 'picture', markerColor = 'purple'),
+                                Church_Place_of_Worship = makeAwesomeIcon (icon = 'screenshot', markerColor = 'beige'),
+                                Concert_Hall_Auditorium = makeAwesomeIcon (icon = 'music', markerColor = 'darkgreen'),
+                                Hotel_Restaurant = makeAwesomeIcon (icon = 'cutlery', markerColor = 'green'),
+                                Holiday_Camp = makeAwesomeIcon (icon = 'tent', markerColor = 'green'),
+                                Large_Venue = makeAwesomeIcon (icon = 'volume-up', markerColor = 'gray'),
+                                Medium_Venue = makeAwesomeIcon (icon = 'volume-up', markerColor = 'orange'),
+                                Nightclub = makeAwesomeIcon (icon = 'cd', markerColor = 'lightblue'),
+                                Other  = makeAwesomeIcon (icon = 'asterisk', markerColor = 'lightgray'), 
+                                Outdoor_Green_Space = makeAwesomeIcon (icon = 'tree-deciduous', markerColor = 'lightgreen'),
+                                Outdoor_Urban_Space = makeAwesomeIcon (icon = 'calendar', markerColor = 'black'),
+                                Pub_Bar = makeAwesomeIcon (icon = 'glass', markerColor = 'darkred'),
+                                Recording_Studio = makeAwesomeIcon (icon = 'headphones', markerColor = 'darkpurple'),
+                                Rehearsal_Studio = makeAwesomeIcon (icon = 'headphones', markerColor = 'lightred'),
+                                Small_Venue = makeAwesomeIcon (icon = 'volume-up', markerColor = 'cadetblue'),
+                                Social_Student = makeAwesomeIcon (icon = 'education', markerColor = 'darkblue'),
+                                Sports_Facility = makeAwesomeIcon (icon = 'flash', markerColor = 'white', iconColor = "gray"),
+                                Stadium = makeAwesomeIcon (icon = 'flag', markerColor = 'pink'),
+                                Theatre_Opera_House = makeAwesomeIcon (icon = 'blackboard', markerColor = 'red'))
+
+                                
+  
+
+all_venue_types <- sort(unique(venue_df_new$ven_type_sim))
+
+venue_type_table <- table(venue_df_new$ven_type_sim)
+venue_type_filter_choices <- as.list(names(venue_type_table))
+names(venue_type_filter_choices) <- paste('(',venue_type_table, ')',' ', names(venue_type_table), sep='')
+
+total_number_of_venues <- nrow(venue_df_new)
+
+#-------------------------------------------------- 
+# Setting Up and Configuring Binary Switch Filters
+#-------------------------------------------------- 
+
+
+#venue_df_new$MD_pad[is.na(venue_df_new$MD_pad)] <- 0
+#venue_df_new$MD_pad[venue_df_new$MD_pad != 1] <- 0
+
+venue_df_new$gigmainbiz[is.na(venue_df_new$gigmainbiz)] <- 0
+venue_df_new$gigmainbiz[venue_df_new$gigmainbiz != 1] <- 0
+
+venue_df_new$Omic[is.na(venue_df_new$Omic)] <- 0
+venue_df_new$Omic[venue_df_new$Omic != 1] <- 0
+
+# Parsing for dynamic filters
+#filt_cols <- names(venue_df_new)[grepl('filt_', names(venue_df_new))]
+#flink_cols <- gsub('filt_', 'flink_', filt_cols)
+
+
+#dyno_filters <- list(filter1 = c('yes','yes','no','no'),
+#                     filter2 = c('yes','yes','no','no'),
+#                     filter3 = c('yes','yes','no','no'))
+
+#op_times <- read_rds('data/optimes.rds')
+
+#-------------------------------------------------- 
+# Shiny dashboard App
+#-------------------------------------------------- 
+
+header <- dashboardHeader(
+  
+  title= i18n$t("Liverpool Live Music Map"),
+  titleWidth = 350
+  
+)
+
+sidebar <- dashboardSidebar(
+  
+  width = 230,
+  
+  sidebarMenu(
+    
+    #img(src='liverpool_logo.png', height = "100%", width = "100%"), p(),
+    mobileDetect('isMobile'),
+    #textOutput('isItMobile'),
+    
+    # search bar
+    selectizeInput("searchBar", label=i18n$t("Search"), 
+                   choices = venue_df_new$str,
+                   selected = NULL,
+                   multiple = TRUE, 
+                   options = list(placeholder = i18n$t("Name/Address/Postcode"),
+                                  maxItems = 1,
+                                  #highlight = 'TRUE',
+                                  openOnFocus = FALSE,
+                                  closeAfterSelect = TRUE),
+    ),
+    # type selector
+    tags$style(".my-class {font-size: 75%; line-height: 1.6;}"),
+    virtualSelectInput("venue_type",i18n$t("Select Venue Type(s):"), 
+                       choices = venue_type_filter_choices,
+                       multiple = TRUE,
+                       selectAllText = paste("(", total_number_of_venues, ")", i18n$t(" Select all"), sep = '' ),
+                       #selectAllText = i18n$t("Select all"),
+                       keepAlwaysOpen = FALSE,
+                       showValueAsTags = FALSE,
+                       placeholder = i18n$t("Select"),
+                       optionsSelectedText = i18n$t("options selected"),
+                       allOptionsSelectedText = i18n$t("All"),
+                       optionSelectedText = i18n$t("option selected")),
+  
+    
+    # Capacity filter dropdown
+    selectInput("capacity", label= i18n$t('Capacity'),
+                choices = c('all', '0-99','100-199', '200-299','300-499', '500-999', '1000-2999', '3000-4999', '5000-9999', '10000+', 'NA'),
+                multiple = FALSE, 
+                selected = i18n$t('all')),
+    
+  
+    
+
+    
+    #-------------------------------------------------- 
+    # Configuring Binary Switch Filters
+    #-------------------------------------------------- 	    
+    
+    #	    materialSwitch(inputId = 'melo_dist',
+    #              	    label = 'Melodic Distraction',
+    #              	    value=FALSE),
+    
+    materialSwitch(inputId = 'main_biz',
+                   label = 'Gigs are main business',
+                   value=FALSE),
+    
+    materialSwitch(inputId = 'open_mic',
+                   label = 'Hosts Open Mic Nights',
+                   value=FALSE),	
+    
+    
+    
+    ################################################## 
+    
+    menuItem(i18n$t("Venue Map"),
+             tabName = "dashboard"
+    ),
+    
+    menuItem(i18n$t("Venue Directory"),
+             tabName = "venue_dbase"
+    ),
+    menuItem(i18n$t("About this map"),
+             tabName = "about_project")
+  )
+)
+
+
+
+# combine the two fluid rows to make the body
+body <- dashboardBody( 
+  
+  tabItems(
+    tabItem("dashboard", 
+            fluidRow( 
+              box(width = "12",
+                  #,solidHeader = TRUE 
+                  #collapsible = TRUE, 
+                  tags$style(type = "text/css", "#venue_map {height: calc(100vh - 80px) !important;}"),
+                  #tags$head(tags$style(HTML(" .leaflet-left .leaflet-control{visibility: hidden;}"))),
+                  leafletOutput("venue_map", height = "4800px")
+              )
+            )
+            #tabitems
+    ),
+    tabItem("venue_dbase",
+            h3(i18n$t("Venue Database")),
+            p(i18n$t("Based on your selection, the following venues are returned.You can use the search function to subset the datatable below by venue name, type, postcode, constituency, or ward. Please note: your selections here do not alter the selections on the main venue map.")),
+            p(),
+            p(), DT::dataTableOutput(outputId = "venuetable")
+    ),
+    tabItem("about_project",
+            h2(i18n$t("Liverpool Live Music Map")),
+            p(i18n$t("The Liverpool City Region (LCR) Music Venues Map is the result of a collaboration between the Liverpool City Region Music Board (LCRMB) and researchers from The University of Liverpool (UoL). The application and associated database aims at a detailed mapping of the live music ecosystem in the LCR, and builds upon and develops methodologies to identify music venues operating across the region established during the"),
+              a(href="https://www.liverpool.ac.uk/media/livacuk/schoolofthearts/documents/music/Liverpool,Live,Music,Census,-,Analysis,of,Data.pdf", i18n$t("Liverpool City"), target="_blank"), i18n$t("version of the"), a(href="http://uklivemusiccensus.org/", i18n$t("2018 UK Live Music Census."), target="_blank")),
+            p(i18n$t("The Liverpool Live Music Map is also part of a larger research programme that examines the impact of shifts in the globalized music economy and national level changes on localised cultural, social and economic actors. The research programme’s aims are to inform the public, policymakers, and stakeholders and use the business intelligence we envision the map providing to enable the LCRMB to develop solutions to the different challenges the regional sector faces. By identifying the key issues affecting Liverpool, as England’s UNESCO City of Music, and the wider region's live sector, we hope to offer best practices across the sector to contribute towards its sustainability and growth.")
+            ),
+            p("University of Liverpool Research Team:"),
+            p(tags$b("Dr Mat Flynn"),"and", tags$b("Richard Anderson")),
+            p("Programming and coding for map development in 2022:"),
+            p(tags$b("Dr Arturas Grauslys"),
+            p("University of Liverpool Research Co-ordinators:"),
+            p(tags$b("Gracia Baines,"), tags$b("Grace Goodwin,"), "and", tags$b("Nina Himmelreich.")),
+            p("University of Liverpool Research Assistants who have contributed to the development of the music venue database:"),
+            p(tags$b("Niall Beesley-Evans, Greg Foster, Jack Drummond-Joy, Rhys Jones, Xian Rong Lee, Caitlin Nash, Angus Snowden, Charlene Soo,"), "and", tags$b("Millie Windsor-Lewis.")),
+            p(i18n$t("Special thanks to"), tags$b("Dr Craig Hamilton "), "for his support and guidance in helping us develop the Liverpool City Region version of the map."),  
+            h3(i18n$t("Funding")),
+            p(i18n$t("The development of the map and related research was funded through the following:")),
+            tags$div("-	February 2020 – January 2021: 'The UK Live Music Industry in a post-2019 era: A Globalised local perspective.’ The work was funded by the Creative Industries Policy and Evidence Centre (PEC) led by Nesta and funded by the Arts and Humanities Research Council"),
+            tags$div("-	May 2021 - July 2021: University of Liverpool’s Undergraduate Research Fund"),
+            tags$div("-	February 2022 – June 2022: University of Liverpool's Policy and Participation Fund"),
+            tags$div("-	May 2022 - July 2022: University of Liverpool’s Undergraduate Research Fund"),
+            tags$div("-	December 2022 – March 2023: UKRI International Fund awarded to Aston University"),
+            tags$div("-	February 2023 – July 2023: Aston University’s Proof of Concept Fund"),
+            tags$div("-	March 2023 – July 2023: University of Liverpool’s Research Development Initiative Fund"),
+            tags$div("-	May 2023 – July 2023: Research England Public Policy Quality-Related Pump-Priming Fund"),
+            tags$div("-	May 2022- July 2022: University of Liverpool’s Undergraduate Research Fund")),
+            
+            
+            
+            #p("This map is based on work undertaken as part of the", tags$i("'The UK Live Music Industry in a post-2019 era: A Globalised local perspective’") 
+            #  , "project (BLMP), funded by the", tags$b("Creative Industries Policy and Evidence Centre (PEC)"), 
+            # "which is led by", tags$b("Nesta")," and funded by the", tags$b("Arts and Humanities Research Council"), "."),
+            h3(i18n$t("About this app")),
+            p(i18n$t("This application is an adaptation of the original Birmingham Venue Map developed by"), tags$b(i18n$t("Dr Craig Hamilton")), i18n$t("for the"), a(href="https://livemusicresearch.org/blmp-map2/", i18n$t("BLMP project"), target="_blank"), i18n$t("and later altered by"), tags$b(i18n$t("Dr Arturas Grauslys")), i18n$t("(University of Liverpool)"), i18n$t("and"), tags$b(i18n$t("Martin Nicastro")), i18n$t("(University of Pavia)"), i18n$t("in collaboration with"), tags$b(i18n$t("Richard Anderson")), i18n$t("(University of Liverpool)"), i18n$t("who provided data management and product development oversight.")),	
+            p("The application is part of the Live Music Mapping Project (LMMP) research collective. It is a Shiny web app built in the R environment."),
+            )
+    #tabItem("add_venue",
+    #        p("We can embed a form here, or remove this tab as an option"),
+    #)
+  )
+)
+
+#completing the ui part with dashboardPage
+ui <- dashboardPage(
+  
+  
+  #tags$head(includeHTML(("google-analytics.html"))),
+  #title = 'Music Venue Map', header, sidebar, body, skin= "yellow")
+  title = 'Music Venue Map', 
+  header, sidebar, body, skin= "black")
+
+
+# create the server functions for the dashboard  
+server <- function(input, output, session) {
+  
+  output$isItMobile <- renderText({
+    ifelse(input$isMobile, "You are on a mobile device", "You are not on a mobile device")
+  })
+  
+  #output$dynoFilters <- renderUI({
+  #    tagList(
+  #    sapply(1:length(dyno_filters), function(i){
+  #        #selectInput(inputId = paste0('inputDyno_',i),
+  #        #        label = names(dyno_filters)[i],
+  #        #        choices = unique(dyno_filters[[i]]),
+  #        #        width = '3%')
+  #        paste(
+  #        switchInput(inputId = paste0('inputDyno_',i),
+  #                     label = names(dyno_filters)[i],
+  #                     onLabel = "On",
+  #                     offLabel = "Off",
+  #                     value=FALSE
+  #                     ), '<br>')
+  #        }
+  #        )
+  #    )
+  #})
+  
+  # Create reactive data frame   
+  venue_sample <- reactive({
+    
+    # Search bar filter (superseeds other filters if not null)
+    if(!is.null(input$searchBar)){
+      venue_sample_loc <- venue_df_new %>% filter(str %in% input$searchBar)
+      return(venue_sample_loc)
+    }
+    
+    # Venue type fiter
+    if (is.null(input$venue_type)) venue_type_loc <- all_venue_types
+    else venue_type_loc <- input$venue_type
+    
+    #-------------------------------------------------- 
+    # Setting Up and Configuring Binary Switch Filters
+    #--------------------------------------------------         
+    
+    #        if(input$melo_dist) mdfilt <- venue_df_new$MD_pad
+    #        else mdfilt <- rep(1, nrow(venue_df_new))
+    
+    if(input$main_biz) mbizfilt <- venue_df_new$gigmainbiz
+    else mbizfilt <- rep(1, nrow(venue_df_new))
+    
+    if(input$open_mic) omicfilt <- venue_df_new$Omic
+    else omicfilt <- rep(1, nrow(venue_df_new))
+    
+  
+    
+    # Dealing with multiple selections
+    #if(is.null(input$capacity)) {
+    #    input$capacity <- 'all'
+    #    inputfilt <- c('0-99','100-199', '200-299','300-499', '500+', 'NA')
+    #} else if('all' %in% input$capacity){
+    #    if (length(input$capacity == 1)) capacityFilt <- c('0-99','100-199', '200-299','300-499', '500+', 'NA')
+    #    else capacityFilt <- input$capacity[-which(input$capacity == 'all')]
+    #        
+    #} else capacityFilt <- input$capacity
+    
+    
+    #-------------------------------------------------- 
+    # Setting Up Capacity Filter Ranges
+    #--------------------------------------------------        
+    
+    
+    
+    if(input$capacity == 'all') capacityFilt <- c('0-99','100-199', '200-299','300-499', '500-999', '1000-2999', '3000-4999', '5000-9999', '10000+', 'NA')
+    else capacityFilt <- input$capacity
+    
+    
+    
+    # Aggregate the filters
+    venue_sample <- venue_df_new %>%
+      filter(ven_type_sim %in% venue_type_loc,
+             venue_capacity_cat %in% capacityFilt)#,
+    
+    #-------------------------------------------------- 
+    # Setting Up and Configuring Binary Switch Filters
+    #-------------------------------------------------- 
+    
+    #if(input$melo_dist) venue_sample <- venue_sample %>% filter(MD_pad == 1)
+    if(input$main_biz) venue_sample <- venue_sample %>% filter(gigmainbiz == 1)
+    if(input$open_mic) venue_sample <- venue_sample %>% filter(Omic == 1)
+    
+    
+    venue_sample
+    
+  })  
+  
+  
+  
+  #shape_reactive <- reactiveVal(shape=layer_test_2_simp_merge) 
+  
+  
+  output$venue_map <- renderLeaflet({
+    
+    
+    rv <- reactiveValues()
+    rv$selected <- NULL
+    
+    hl_opts <- highlightOptions(
+      color = "red", weight = 1.5, bringToFront = TRUE)
+    
+    leaflet(options = leafletOptions(preferCanvas = TRUE),
+            (zoomControl = FALSE)) %>%
+      
+      #htmlwidgets::onRender("function(el, x) {
+      #L.control.zoom({ position: 'topright' }).addTo(this)
+      #}") %>%
+      
+      setView(lng = -2.9773, lat = 53.4076, zoom = 12) %>%
+      
+      addProviderTiles(providers$CartoDB.Positron, options = providerTileOptions(
+        updateWhenZooming = FALSE,      
+        updateWhenIdle = TRUE)) 
+      
+      
+      
+      ##Shape combined
+      #addPolygons(data = layer_test_2_simp_merge,
+                  #stroke = TRUE, 
+                  #opacity = 0.5,
+                  #weight = 0.3,
+                  #smoothFactor = 1, 
+                  #fillOpacity = 0,
+                  #color = "red",
+                  #group = i18n$t("Lower layer Super Output Areas (LSOA)"),
+                  #layerId = "Lower layer Super Output Areas (LSOA)",
+                  #label = label_LSOA,
+                  
+                  #highlightOptions = hl_opts) %>%
+      
+      ##Shape median prices
+      #addPolygons(data = layer_test_2_simp_merge,
+                  #stroke = TRUE, 
+                  #opacity = 0.5,
+                  #weight = 0.3,
+                  #smoothFactor = 1, 
+                  #fillOpacity = 1,
+                  #color = 'black',
+                  #fillColor = ~palette_median(median_18Q4),
+                  #group = i18n$t("Median House Prices"),
+                  #layerId = "Median House Prices",
+                  #label = label_price,
+                  #highlightOptions = hl_opts) %>%
+      
+      ##Shape count
+      #addPolygons(data = layer_test_2_simp_merge,
+                  #stroke = TRUE, 
+                  #opacity = 0.5,
+                  #weight = 0.3,
+                  #smoothFactor = 1, 
+                  #fillOpacity = 1,
+                  #color = 'black',
+                  #fillColor = ~palette_count(count_18Q4),
+                  #group = i18n$t("Transactions Count"),
+                  #layerId = "Transactions Count",
+                  #label = label_count,
+                  #highlightOptions = hl_opts)
+      
+      
+      #addLegend("bottomleft", 
+      #pal = palette_median, 
+      #values = layer_test_2_simp_merge$median_18Q4,
+      #title = "Median House Prices:",
+      #labFormat = labelFormat(suffix = " "),
+      #opacity = 1,
+      #layerId ="Median House Prices") %>%
+      
+      
+    #addLayersControl(baseGroups = c(
+      #i18n$t("Lower layer Super Output Areas (LSOA)"),
+      #i18n$t("Median House Prices"),
+      #i18n$t("Transactions Count"), 
+      #i18n$t("Empty")),
+      #position = "topright",
+      #options = layersControlOptions(collapsed = TRUE)) %>%
+      
+      #hideGroup(c(i18n$t("Median House Prices"), i18n$t("Lower layer Super Output Areas (LSOA)"), i18n$t("Transactions Count"))) 
+    
+    
+  })
+  
+  
+  observe({
+    venue_sample <- venue_sample()
+    
+    
+    if(!is.null(input$searchBar)){
+      
+      leafletProxy("venue_map", data=venue_sample) %>%
+        clearPopups() %>%
+        clearMarkers() %>%
+        clearMarkerClusters() %>%
+        clearControls() %>%
+        addAwesomeMarkers(~Longitude,
+                          ~Latitude,
+                          icon = ~total_icons[ven_type_sim_2],
+                          options = popupOptions(maxWidth = 100, maxHeight = 150), 
+                          clusterOptions = markerClusterOptions())%>%
+        addPopups(
+          venue_sample$longitude,
+          venue_sample$latitude,
+          popup = make_popup(venue_sample),
+          layerId = "popup",
+          options  = popupOptions(offset = list (x = 0, y = -2))
+        ) %>%
+        setView(lng = venue_sample$longitude, 
+                lat = venue_sample$latitude, 
+                zoom=16
+        ) %>%
+        
+        addLegend("bottomright", pal = pal, values = ~ven_type_sim,
+                  title = i18n$t("Venue Types"),
+                  labFormat = labelFormat(prefix = ""),
+                  opacity = 1)  
+      
+      
+    } else {
+      
+      leafletProxy('venue_map', data=venue_sample) %>%
+        clearPopups() %>%
+        clearMarkers() %>%
+        clearMarkerClusters() %>%
+        clearControls() %>%
+        {if (nrow(venue_sample) > 0) addAwesomeMarkers (.,
+                                                        ~longitude, 
+                                                        ~latitude, 
+                                                        popup = sapply(1:nrow(venue_sample), function(i) make_popup(venue_sample[i,])),
+                                                        label = ~venue_name,
+                                                        icon = ~total_icons[ven_type_sim_2],
+                                                        options = popupOptions(maxWidth = 100, maxHeight = 150), 
+                                                        clusterOptions = markerClusterOptions()) else . } %>%
+        
+        ##Shape test 
+        #addPolygons(data = layer_test,
+        #stroke = TRUE, 
+        #opacity = 0.3,
+        #weight = 1,
+        #smoothFactor = 1, 
+        #fillOpacity = 0,
+        #color = "red",
+        #group = "Local Authorities Districts",
+        #label = ~paste(layer_test$lsoa11cd)) %>%
+      
+      
+      
+      
+      
+      
+      {
+        if(!(input$isMobile & (nrow(venue_sample)==total_number_of_venues)))
+          
+          addLegend(.,"bottomright", pal = pal, values = ~ven_type_sim,
+                    title = i18n$t("Venue Types"),
+                    labFormat = labelFormat(prefix = ""),
+                    opacity = 1) 
+        else .}
+    }
+    
+  }) 
+  #----------------------------------------------------------------------------------------------------  
+  
+  
+  output$survey <- renderUI({
+    tags$iframe(width= "100%", height = "1800", src ="https://docs.google.com/forms/d/e/1FAIpQLSdSCdv-b0wafLsdNSrHs6J2c9O3bxzB4RLhgTWKLzBXkJrrTQ/viewform?embedded=true", frameborder="0", marginheight="0", marginwidth="0")
+  })
+  
+  
+  
+  #Explore venues
+  output$venuetable <- DT::renderDataTable({
+    venue_sample <- venue_sample()
+    DT::datatable(data = venue_sample[,c('venue_name', 'venue_add_one', 'venue_add_two', 'venue_pcode', 'ven_type_sim', 'venue_capacity')], 
+                  options = list(pageLength = 10,
+                                 language = list(url = i18n$t('//cdn.datatables.net/plug-ins/1.10.11/i18n/English.json'))),
+                  rownames = FALSE,
+                  colnames = c(i18n$t("Venue"),i18n$t("Address"),i18n$t("Town/City"), i18n$t("Postcode"), i18n$t("Venue Type"), i18n$t("Capacity")))
+  })
+}
+
+shinyApp(ui = ui, server = server)
+
+

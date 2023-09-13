@@ -1,0 +1,28 @@
+{
+    "id": "01F0B9F9",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1672240211562.0,
+    "source_on_save": false,
+    "relative_order": 10,
+    "properties": {
+        "id": "8cf475754266469ea537ea9995dff296",
+        "name": "Cerchie",
+        "title": "Cerchie",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 2475150337008,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1672240211562,
+    "read_only": false,
+    "read_only_alternatives": []
+}

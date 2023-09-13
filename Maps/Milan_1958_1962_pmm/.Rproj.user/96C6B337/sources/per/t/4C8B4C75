@@ -1,0 +1,28 @@
+{
+    "id": "4C8B4C75",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1671625528039.0,
+    "source_on_save": false,
+    "relative_order": 4,
+    "properties": {
+        "id": "48c61486a00c4b13ac6cb30a1181d97f",
+        "name": "Teatri",
+        "title": "Teatri",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1671625341,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1671625528039,
+    "read_only": false,
+    "read_only_alternatives": []
+}

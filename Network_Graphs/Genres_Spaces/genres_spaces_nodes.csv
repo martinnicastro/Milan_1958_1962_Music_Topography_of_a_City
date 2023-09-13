@@ -1,0 +1,123 @@
+Id,Label,nome,numero di eventi menzionati,tipologia,indirizzo,latitude,longitude,eigencentrality,Eccentricity,closnesscentrality,harmonicclosnesscentrality,betweenesscentrality
+001s,Accademia Csaky,Accademia Csaky,1,Sala da concerto,"Via Vivaio, 7, Milano, Italia",45.468868,9.203755,0.100677,4,0.322667,0.36157,0.753901
+002s,Agape degli Artisti,Agape degli Artisti,1,Sala da concerto,"Via Mulino delle Armi, 12, Milano, Italia",45.456421,9.185753,0.111626,4,0.342776,0.384298,8.016625
+004s,Ambrosianeum,Ambrosianeum,1,Sala da concerto,"Via delle Ore, 3, Milano, Italia",45.462915,9.192585,0.17141,4,0.337047,0.384986,14.221095
+005s,Angelicum,Angelicum,1,Sala da concerto,"Via Renzo Bertoni, 5, Milano, Italia",45.475418,9.19274,0.320902,4,0.370031,0.431818,59.100387
+006s,Arenella,Arenella,1,Dancing,"Via Pietro Panzeri, 5, Milano, Italia",45.453604,9.178385,0.153959,4,0.346705,0.38843,0.578376
+007s,Astoria,Astoria,1,Night club,"Piazza Santa Maria Beltrade, 2, Milano, Italia",45.462903,9.186893,0.153959,4,0.346705,0.38843,0.578376
+008s,Auditorium Tesio,Auditorium Tesio,1,Teatro,"Viale Angelo Salmoiraghi, 2, Milano, Italia",45.483855,9.141603,0.039079,4,0.283372,0.304408,0
+009s,Basilica di San Ambrogio,Basilica di San Ambrogio,1,Teatro/Sala da concerto,"Piazza San Ambrogio, 15, Milano, Italia",45.462991,9.176053,0.134507,4,0.338936,0.383609,12.531837
+010s,Bel Sit,Bel Sit,1,Night club,"Viale Certosa, 85, Milano, Italia",45.493301,9.14394,0.153959,4,0.346705,0.38843,0.578376
+011s,Biblioteca Germanica,Biblioteca Germanica,1,Sala da concerto,"Via Legnano, 24, Milano, Italia",45.475942,9.181967,0.062543,4,0.319261,0.353994,0
+012s,Birra Italia,Birra Italia,1,Night club,"Corso Sempione, 69, Milano, Italia",45.48478,9.159663,0.181168,4,0.350725,0.396006,5.915145
+013s,Caffè Missori,Caffè Missori,1,Altro,"Piazza Giuseppe Missori, 1, Milano, Italia",45.460851,9.188505,0.033491,4,0.279446,0.298209,0
+016s,Castello Sforzesco,Castello Sforzesco,1,Altro,"Piazza Castello, Milano, Italia",45.469204,9.178153,0.04031,4,0.287411,0.310606,0
+017s,Centro Culturale Pirelli,Centro Culturale Pirelli,1,Sala da concerto,"Piazza Duca d'Aosta, 5, Milano, Italia",45.486543,9.203708,0.111124,4,0.3297,0.373278,13.470928
+018s,Centro francese di studi e informazioni,Centro francese di studi e informazioni,1,Sala da concerto,"Via Bigli, 2, Milano, Italia",45.468018,9.194651,0.094196,4,0.322667,0.36157,1.607082
+020s,Cinema Carcano,Cinema Carcano,1,Cinema/Teatro,"Corso di Porta Romana, 63, Milano, Italia",45.456738,9.195589,0.255078,4,0.376947,0.431129,30.118035
+021s,Cinema Gloria,Cinema Gloria,1,Cinema/Teatro,"Corso Vercelli, 18, Milano, Italia",45.466502,9.161763,0.100677,4,0.322667,0.36157,0.753901
+022s,Cinema Orfeo,Cinema Orfeo,1,Cinema/Teatro,"Via Cogni Zugna, 50, Milano, Italia",45.456851,9.169641,0.166884,4,0.363363,0.408402,12.374698
+023s,Circolo Alessandro Volta,Circolo Alessandro Volta,1,Sala da concerto,"Via Giuseppe Giusti, 16, Milano, Italia",45.480291,9.176821,0.062543,4,0.319261,0.353994,0
+024s,Circolo del Castello,Circolo del Castello,1,Sala da concerto,"Via Quintino Sella, 2, Milano, Italia",45.470265,9.182919,0.100677,4,0.322667,0.36157,0.753901
+025s,Circolo della Rinascente,Circolo della Rinascente,1,Sala da concerto,"Via Durini, 24, Milano, Italia",45.464917,9.198557,0.266824,4,0.365559,0.420799,60.128643
+026s,Circolo della Stampa,Circolo della Stampa,1,Sala da concerto,"Corso Venezia, 16, Milano, Italia",45.468905,9.200167,0.346123,4,0.460076,0.497934,166.778209
+027s,Circolo di Via Marsala,Circolo di Via Marsala,1,Sala da concerto,"Via Marsala, 1, Milano, Italia",45.478714,9.187311,0.106038,4,0.33518,0.376033,3.705806
+028s,Circolo Filologico Milanese,Circolo Filologico Milanese,1,Sala da concerto,"Via Clerici, 10, Milano, Italia",45.467265,9.187192,0.094196,4,0.322667,0.36157,1.607082
+030s,Conservatorio Giuseppe Verdi (sala Puccini),Conservatorio Giuseppe Verdi (sala Puccini),1,Sala da concerto,"Via Conservatorio, 12, Milano, Italia",45.465009,9.203174,0.249918,4,0.350725,0.40978,44.22482
+031s,Conservatorio Giuseppe Verdi (sala Verdi),Conservatorio Giuseppe Verdi (sala Verdi),1,Sala da concerto,"Via Conservatorio, 12, Milano, Italia",45.465009,9.203175,0.317173,4,0.374613,0.43595,75.641678
+032s,Conty Grill (Hotel Continental),Conty Grill (Hotel Continental),1,Night club,"Via Romagnosi, 2, Milano, Italia",45.46853,9.190593,0.153959,4,0.346705,0.38843,0.578376
+034s,Eidac,Eidac,1,Sala da concerto,"Via Morigi, 9, Milano, Italia",45.463276,9.180784,0.062543,4,0.319261,0.353994,0
+035s,El Flamingo,El Flamingo,1,Night club,"Via Buozzi,1, Sesto San Giovanni, Italia",45.530178,9.228952,0.153959,4,0.346705,0.38843,0.578376
+036s,El Maroco,El Maroco,1,Night club,"Via Paolo da Cannobio, Milano, Italia",45.461153,9.189978,0.153959,4,0.346705,0.38843,0.578376
+039s,Famiglia Artistica Milanese,Famiglia Artistica Milanese,1,Sala da concerto,"Piazza Cavour, 2, Milano, Italia",45.472303,9.195768,0.149699,4,0.340845,0.385675,8.854435
+040s,Famiglia Siciliana,Famiglia Siciliana,1,Sala da concerto,"Via Dogana, 2, Milano, Italia",45.463394,9.189293,0.05198,4,0.291566,0.316804,0
+041s,Florida,Florida,1,Night club,"Via Fontana, 6, Milano, Italia",45.461817,9.204064,0.153959,4,0.346705,0.38843,0.578376
+042s,Galleria Blu,Galleria Blu,1,Sala da concerto,"Via Andegari, 12, Milano, Italia",45.469181,9.190885,0.021128,5,0.27191,0.286777,0
+043s,Gatto Verde,Gatto Verde,1,Night club,"Via Andrea Doria, 2, Milano, Italia",45.484652,9.206343,0.153959,4,0.346705,0.38843,0.578376
+045s,Hotel Cavalieri,Hotel Cavalieri,1,Night club,"Piazza Giuseppe Missori, 1, Milano, Italia",45.460851,9.188505,0.153959,4,0.346705,0.38843,0.578376
+046s,Hotel Principe & Savoia,Hotel Principe & Savoia,1,Night club,"Piazza della Repubblica, 17, Milano, Italia",45.479794,9.196275,0.23019,4,0.372308,0.42011,17.887053
+047s,Il Globo (Bande Nere),Il Globo (Bande Nere),1,Teatro,"Piazzale Giovanni delle Bande Nere, Milano, Italia",45.462125,9.136855,0.121723,4,0.363363,0.404959,11.753806
+048s,Il Globo (Molino delle Armi),Il Globo (Molino delle Armi),1,Teatro,"Via Molino delle Armi, 31, Milano, Italia",45.456764,9.183139,0.102853,4,0.33518,0.376033,6.384973
+049s,Il Globo (Restelli),Il Globo (Restelli),1,Teatro,"Via Luigi Galvani, 27, Milano, Italia",45.487862,9.196119,0.103022,4,0.303258,0.34022,3.157819
+050s,Il Globo (San Barnaba),Il Globo (San Barnaba),1,Teatro,"Via San Barnaba, 50, Milano, Italia",45.459832,9.202377,0.203855,4,0.365559,0.413912,25.420502
+051s,Istituto dei ciechi (Sala Barozzi),Istituto dei ciechi (Sala Barozzi),1,Sala da concerto,"Via Vivaio, 7, Milano, Italia",45.468867,9.203753,0.132331,4,0.326146,0.369146,3.531686
+052s,La Bagatelle,La Bagatelle,1,Night club,"Galleria Passarella, 1, Milano, Italia",45.465627,9.197237,0.153959,4,0.346705,0.38843,0.578376
+053s,La Barca d'Oro,La Barca d'Oro,1,Night club,"Via Borgospesso, 18, Milano, Italia",45.470326,9.194529,0.153959,4,0.346705,0.38843,0.578376
+054s,La Lucciola,La Lucciola,1,Night club,"Viale Lombardia, 68, Milano, Italia",45.487027,9.224009,0.153959,4,0.346705,0.38843,0.578376
+055s,La Maggiolina,La Maggiolina,1,Dancing,"Via Eugenio Torelli Viollier, 26, Milano, Italia",45.5004,9.20198,0.153959,4,0.346705,0.38843,0.578376
+057s,Le Roi,Le Roi,1,Night club,"Via Luca Beltrami, 1, Milano, Italia",45.468737,9.181619,0.153959,4,0.346705,0.38843,0.578376
+058s,Lido,Lido,1,Night club,"Piazzale Lorenzo Lotto, 15, Milano, Italia",45.48184,9.141107,0.202981,4,0.367781,0.412534,10.462954
+059s,Lidò Trianon,Lidò Trianon,1,Night club,"Galleria De Cristoforis, Milano, Italia",45.465866,9.195145,0.153959,4,0.346705,0.38843,0.578376
+061s,Lyceum,Lyceum,1,Sala da concerto,"Via Manzoni, 41, Milano, Italia",45.471489,9.193905,0.100677,4,0.322667,0.36157,0.753901
+062s,Maxim,Maxim,1,Dancing,"Galleria Manzoni, Milano, Italia",45.469766,9.192471,0.153959,4,0.346705,0.38843,0.578376
+063s,Montemerlo Rendez-Vous,Montemerlo Rendez-Vous,1,Night club,"Giardini Pubblici Indro Montanelli, Milano, Italia",45.474424,9.199361,0.153959,4,0.346705,0.38843,0.578376
+064s,Monterosa,Monterosa,1,Dancing,"Piazzale Lotto, 14, Milano, Italia",45.480737,9.143667,0.153959,4,0.346705,0.38843,0.578376
+066s,Museo della Scienza,Museo della Scienza,1,Sala da concerto,"Via San Vittore, 21, Milano, Italia",45.462687,9.171088,0.132331,4,0.326146,0.369146,3.531686
+067s,Night Club 68 (Milan Noueva),Night Club 68 (Milan Noueva),1,Night club,"Via Pietro Verri, 8, Milano, Italia",45.467707,9.195024,0.153959,4,0.346705,0.38843,0.578376
+068s,Odeon Giardino,Odeon Giardino,1,Night club,"Via Santa Radegonda, 8, Milano, Italia",45.465156,9.192197,0.181168,4,0.350725,0.396006,5.915145
+069s,Palazzo del Ghiaccio,Palazzo del Ghiaccio,1,Palazzetto,"Via Giovanni Battista Piranesi, 14, Milano, Italia",45.460231,9.227075,0.315661,4,0.384127,0.437328,45.870857
+070s,Palazzo dello Sport,Palazzo dello Sport,1,Palazzetto,"Piazza Sei Febbraio, Milano, Italia",45.477825,9.160783,0.18822,4,0.365559,0.413912,16.777597
+071s,Palazzo Durini,Palazzo Durini,1,Sala da concerto,"Via Santa Maria Valle, 2, Milano, Italia",45.460086,9.183906,0.121805,4,0.326146,0.369146,6.648994
+072s,Palazzo Sormani,Palazzo Sormani,1,Sala da concerto,"Corso di Porta Vittoria,6, Milano, Italia",45.462164,9.198145,0.031654,5,0.284706,0.308402,0
+073s,Piccola Scala,Piccola Scala,1,Teatro/Sala da concerto,"Via Filodrammatici, 1, Milano, Italia",45.46744,9.188433,0.155004,4,0.337047,0.38843,27.125454
+074s,Piccolo bar,Piccolo bar,1,Night club,"Via Gian Domenico Romagnosi, 1, Milano, Italia",45.458889,9.179589,0.153959,4,0.346705,0.38843,0.578376
+075s,Piccolo Teatro,Piccolo Teatro,1,Teatro/Sala da concerto,"Via Rovello, 2, Milano, Italia",45.466488,9.185098,0.359242,4,0.427562,0.480716,115.618263
+078s,Pinacoteca di Brera,Pinacoteca di Brera,1,Sala da concerto,"Via Brera, 28, Milano, Italia",45.472017,9.188752,0.132331,4,0.326146,0.369146,3.531686
+079s,Politecnico,Politecnico,1,Sala da concerto,"Piazza Leonardo da Vinci, 32, Milano, Italia",45.478129,9.227791,0.094196,4,0.322667,0.36157,1.607082
+080s,Porta d'Oro,Porta d'Oro,1,Night club,"Piazza Diaz, 3, Milano, Italia",45.462352,9.190606,0.202981,4,0.367781,0.412534,10.462954
+082s,Ristorante Grande Italia,Ristorante Grande Italia,1,Night club,"Galleria Vittorio Emanuele, Milano, Italia",45.465844,9.18994,0.153959,4,0.346705,0.38843,0.578376
+083s,Sala Leone XIII,Sala Leone XIII,1,Sala da concerto,"Via Leone XIII, 12, Milano, Italia",45.474025,9.162661,0.139455,4,0.33518,0.379477,6.41561
+085s,Santa Tecla Saloon,Santa Tecla Saloon,1,Night club,"Via Santa Tecla, 3, Milano, Italia",45.462797,9.193098,0.28217,4,0.37931,0.429752,33.438639
+086s,Sede U.S.I.S.,Sede U.S.I.S.,1,Sala da concerto,"Via Bigli, 11, Milano, Italia",45.468227,9.193645,0.195902,4,0.356932,0.405647,17.935713
+087s,Sferisterio Diana,Sferisterio Diana,1,Sala da concerto,"Viale Piave, 42, Milano, Italia",45.473491,9.206751,0.05198,4,0.291566,0.316804,0
+089s,Società del Giardino,Società del Giardino,1,Sala da concerto,"Via San Paolo, 10, Milano, Italia",45.465586,9.194531,0.062543,4,0.319261,0.353994,0
+090s,Star Jolly Club,Star Jolly Club,1,Night club,"Piazza San Babila, Milano, Italia",45.466374,9.197748,0.153959,4,0.346705,0.38843,0.578376
+093s,Supercinema Alcione,Supercinema Alcione,1,Cinema/Teatro,"Piazza Vetra, 11, Milano, Italia",45.458372,9.183369,0.256628,4,0.376947,0.434573,36.703624
+094s,Taverna della giarrettiera,Taverna della giarrettiera,1,Night club,"Galleria Vittorio Emanuele, Milano, Italia",45.465844,9.189941,0.153959,4,0.346705,0.38843,0.578376
+095s,Taverna Duomo (Gran Hotel Duomo),Taverna Duomo (Gran Hotel Duomo),1,Night club,"Via San Raffaele, 1, Milano, Italia",45.465607,9.191301,0.202981,4,0.367781,0.412534,10.462954
+097s,Teatrino del Corso,Teatrino del Corso,1,Teatro/Sala da concerto,"Corso Vittorio Emanuele, 22, Milano, Italia",45.465201,9.195327,0.329805,4,0.456604,0.492424,139.847331
+099s,Teatro alle Maschere,Teatro alle Maschere,1,Teatro,"Via Borgogna, 7, Milano, Italia",45.465948,9.200028,0.078384,4,0.297297,0.331956,5.533647
+100s,Teatro alla Scala,Teatro alla Scala,1,Teatro/Sala da concerto,"Via Filodrammatici, 2, Milano, Italia",45.46752,9.189452,0.333918,4,0.365559,0.434573,99.460693
+101s,Teatro Convegno,Teatro Convegno,1,Teatro,"Via degli Omenoni, 3, Milano, Italia",45.467438,9.191934,0.31976,4,0.443223,0.48416,126.198107
+102s,Teatro dal Verme,Teatro dal Verme,1,Cinema/Teatro,"Via San Giovanni sul muro, 4, Milano, Italia",45.467102,9.181496,0.376646,4,0.391586,0.450413,65.548541
+103s,Teatro dell'arte,Teatro dell'arte,1,Teatro/Sala da concerto,"Via Emilio Alemagna, 6, Milano, Italia",45.472446,9.174491,0.251596,4,0.370031,0.424931,53.579108
+104s,Teatro Elena,Teatro Elena,1,Cinema/Teatro,"Via Martino, 1, Sesto San Giovanni, Italia",45.533375,9.229839,0.108622,4,0.340845,0.382231,2.696976
+105s,Teatro Gerolamo,Teatro Gerolamo,1,Teatro/Sala da concerto,"Piazza Cesare Beccaria, 8, Milano, Italia",45.464187,9.194569,0.61929,4,0.519313,0.559917,645.387222
+106s,Teatro Lirico,Teatro Lirico,1,Teatro/Sala da concerto,"Via Larga, 16, Milano, Italia",45.461341,9.191657,0.639683,4,0.506276,0.546832,394.16794
+107s,Teatro Manzoni,Teatro Manzoni,1,Teatro/Sala da concerto,"Via Alessandro Manzoni, 42, Milano, Italia",45.471277,9.194432,0.549931,4,0.436823,0.500689,187.138605
+108s,Teatro Nuovo,Teatro Nuovo,1,Teatro/Sala da concerto,"Piazza San Babila, 3, Milano, Italia",45.466583,9.197211,0.682547,4,0.519313,0.559917,617.056789
+109s,Teatro Odeon,Teatro Odeon,1,Teatro,"Via Santa Radegonda, 8, Milano, Italia",45.465233,9.192155,0.252802,4,0.384127,0.437328,35.252021
+110s,Teatro Olimpia (Olimpia Music Hall),Teatro Olimpia (Olimpia Music Hall),1,Teatro/Sala da concerto/Dancing,"Foro Bonaparte, 74, Milano, Italia",45.46899,9.182807,0.622841,4,0.510549,0.548898,478.600083
+111s,Teatro Puccini,Teatro Puccini,1,Cinema/Teatro,"Corso Buenos Aires,33, Milano, Italia",45.479443,9.209791,0.066289,4,0.298765,0.330579,2.753484
+112s,Teatro Rosetum,Teatro Rosetum,1,Sala da concerto,"Via Pisanello, 21, Milano, Italia",45.466042,9.138751,0.081413,4,0.337047,0.374656,0
+113s,Teatro San Marco,Teatro San Marco,1,Teatro/Sala da concerto,"Via San Marco, 2, Milano, Italia",45.473497,9.188116,0.141312,4,0.319261,0.360882,4.823608
+114s,Teatro Sant'Erasmo,Teatro Sant'Erasmo,1,Teatro/Sala da concerto,"Via dei Giardini, 7, Milano, Italia",45.471472,9.192511,0.316562,4,0.374613,0.432507,45.40443
+115s,Teatro Smeraldo,Teatro Smeraldo,1,Cinema/Teatro,"Piazza Venticinque Aprile, 10, Milano, Italia",45.480566,9.188105,0.453725,4,0.418685,0.481405,129.746652
+116s,Trocadero,Trocadero,1,Night club,"Galleria Vittorio Emanuele II, Milano, Italia",45.465843,9.18994,0.153959,4,0.346705,0.38843,0.578376
+117s,Teatro del Popolo (Umanitaria),Teatro del Popolo (Umanitaria),1,Sala da concerto,"Via Francesco Daverio, 7, Milano, Italia",45.459343,9.200982,0.527183,4,0.489879,0.528237,391.212682
+118s,Università Cattolica,Università Cattolica,1,Sala da concerto,"Largo Agostino Gemelli, 1, Milano, Italia",45.463051,9.176759,0.062543,4,0.319261,0.353994,0
+119s,Università degli Studi,Università degli Studi,1,Sala da concerto,"Via Festa del Perdono, 7, Milano, Italia",45.460342,9.19413,0.100677,4,0.322667,0.36157,0.753901
+120s,Università popolare,Università popolare,1,Sala da concerto,"Piazza Missori, 4, Milano, Italia",45.461009,9.18784,0.081413,4,0.337047,0.374656,0
+001g,Avanguardia,Avanguardia,1,,,,,0.25856,4,0.372308,0.411157,158.159958
+002g,Balletto,Balletto,5,,,,,0.434252,3,0.381703,0.429752,51.555917
+003g,Cabaret,Cabaret,5,,,,,0.121093,5,0.35277,0.376309,14.491619
+004g,Cantautorato,Cantautorato,5,,,,,0.422112,3,0.386581,0.440771,227.600834
+005g,Canzone francese,Canzone francese,5,,,,,0.216407,3,0.367781,0.396694,25.357125
+006g,Canzone intellettuale,Canzone intellettuale,5,,,,,0.091459,5,0.348703,0.365289,0.352851
+007g,Canzone internazionale,Canzone internazionale,5,,,,,0.893768,3,0.478261,0.606061,1478.744988
+008g,Canzone italiana,Canzone italiana,5,,<valore NULL>,,,1,3,0.506276,0.644628,2058.409247
+009g,Canzone napoletana,Canzone napoletana,5,,,,,0.209779,4,0.365559,0.394628,32.802232
+010g,Commedia musicale,Commedia musicale,5,,,,,0.425389,3,0.381703,0.429752,59.385757
+011g,Jazz moderno,Jazz moderno,5,,,,,0.652871,3,0.410169,0.490358,523.956653
+012g,Jazz tradizionale,Jazz tradizionale,5,,,,,0.61712,3,0.410169,0.490358,401.680989
+013g,Musica antica,Musica antica,5,,,,,0.375098,4,0.396721,0.469697,381.258071
+014g,Musica colta classica,Musica colta classica,5,,,,,0.751939,3,0.467181,0.589532,1828.169352
+015g,Musica colta contemporanea,Musica colta contemporanea,5,,,,,0.460913,4,0.404682,0.482782,403.015047
+016g,Musica popolare,Musica popolare,5,,,,,0.569693,3,0.39934,0.46832,252.211803
+017g,Opera antica,Opera antica,5,,,,,0.143519,4,0.356932,0.38292,11.54318
+018g,Opera classica,Opera classica,5,,,,,0.489768,3,0.394137,0.4573,374.701447
+019g,Opera contemporanea,Opera contemporanea,5,,,,,0.110836,4,0.356932,0.379477,9.253166
+020g,Operetta,Operetta,5,,,,,0.316301,4,0.367781,0.403581,19.068263
+021g,Rivista,Rivista,5,,,,,0.34743,4,0.374613,0.42011,79.41156
+022g,Rock and Roll,Rock and Roll,5,,,,,0.334559,5,0.370031,0.427273,127.123549
+023g,Musica di scena,Musica di scena,5,,,,,0.500319,3,0.401993,0.473829,460.746389

@@ -1,0 +1,636 @@
+##install.packages("leaflet")
+##install.packages("sp")
+##install.packages("rgdal")
+##install.packages("RColorBrewer")
+##install.packages("leaflet.extras")
+##install.packages("leaflet.minicharts")
+##install.packages("htmlwidgets")
+##install.packages("raster")
+##install.packages("mapview")
+##install.packages("leafem")
+
+## Call the libraries
+library(leaflet)
+library(sp)
+library(rgdal)
+library(RColorBrewer)
+library(leaflet.extras)
+library(leaflet.minicharts)
+library(htmlwidgets)
+library(raster)
+library(mapview)
+library(leafem)
+library(leafpop)
+library(sf)
+library(htmltools)
+library(magrittr)
+
+
+## PART 1 - IN THIS PART THE CODE READS THE FILES AND ATTRIBUTES COLORS AND ICONS TO ELEMENTS
+
+## Shapefile night club
+Night_Club <- readOGR('Night_Club/Night_Club.shp')
+
+## Shapefile cinema
+Cinema <- readOGR('Cinema/Cinema.shp')
+
+## Shapefile teatri
+Teatri <- readOGR('Teatri/Teatri.shp')
+
+## Shapefile whisky
+Whisky <- readOGR('Whisky/Whisky.shp')
+
+## Shapefile dancing
+Dancing <- readOGR('Dancing/Dancing.shp')
+
+## Shapefile cerchie
+Cerchie <- readOGR('Cerchie/Cerchie.shp')
+
+## Palette night club
+palette_night_club <- colorFactor(palette = c("#f9a515"), domain = Night_Club$tipologia)
+
+## Palette cinema
+palette_cinema <- colorFactor(palette = c("green"), domain = Cinema$tipologia)
+
+
+## Palette teatri
+palette_teatri <- colorFactor(palette = c("#fd0090", "#0090fd","#0012fd", "#fd0012",  "#900C3F" ),  domain = Teatri$tipologia)
+
+## Palette whisky
+palette_whisky <- colorFactor(palette = c("darkorchid"), domain = Whisky$tipologia)
+
+## Palette dancing
+palette_dancing <- colorFactor(palette = c("#f9ef15"), domain = Dancing$tipologia)
+
+##totale csv
+venues_data <- read.csv("venues.csv")
+
+##totale html popup
+venues_content <- paste(sep = "<br/>",
+                        paste0("<div class='leaflet-popup-scrolled' style='max-width:600px;max-height:400px'>"),
+                        paste0("<b>", "Nome: ", "</b>", venues_data$Nome),
+                        paste0("<b>", "Organizzatore: ", "</b>", venues_data$Organizzatore),
+                        paste0("<b>", "Indirizzo: ", "</b>", venues_data$Indirizzo),
+                        paste0("<b>", "Tipologia: ", "</b>", venues_data$Tipologia),
+                        paste0("<b>", "Eventi: ", "</b>", venues_data$Eventi),
+                        paste0("<b>", "Capienza: ", "</b>", venues_data$Capienza),
+                        paste0(venues_data$Thumbnails),
+                        paste0(venues_data$Immagini_originali),
+                        paste0("<b>", "Data immagine: ", "</b>", venues_data$Data_foto),
+                        paste0("</div>"))
+
+##teatri csv
+teatri_data <- read.csv("teatri.csv")
+
+##teatri html popup
+teatri_content <- paste(sep = "<br/>",
+                 paste0("<div class='leaflet-popup-scrolled' style='max-width:600px;max-height:400px'>"),
+                 paste0("<b>", "Nome: ", "</b>", teatri_data$Nome),
+                 paste0("<b>", "Organizzatore: ", "</b>", teatri_data$Organizzatore),
+                 paste0("<b>", "Indirizzo: ", "</b>", teatri_data$Indirizzo),
+                 paste0("<b>", "Tipologia: ", "</b>", teatri_data$Tipologia),
+                 paste0("<b>", "Eventi: ", "</b>", teatri_data$Eventi),
+                 paste0("<b>", "Capienza: ", "</b>", teatri_data$Capienza),
+                 paste0(teatri_data$Thumbnails),
+                 paste0(teatri_data$Immagini_originali),
+                 paste0("<b>", "Data immagine: ", "</b>", teatri_data$Data_foto),
+                 paste0("</div>"))
+##teatri icons
+teatri_icons <- makeAwesomeIcon(icon = 'music', markerColor = 'blue')
+
+
+##cinema csv
+cinema_data <- read.csv("cinema.csv")
+
+##cinema html popup
+cinema_content <- paste(sep = "<br/>",
+                        paste0("<div class='leaflet-popup-scrolled' style='max-width:600px;max-height:400px'>"),
+                        paste0("<b>", "Nome: ", "</b>", cinema_data$Nome),
+                        paste0("<b>", "Organizzatore: ", "</b>", cinema_data$Organizzatore),
+                        paste0("<b>", "Indirizzo: ", "</b>", cinema_data$Indirizzo),
+                        paste0("<b>", "Tipologia: ", "</b>", cinema_data$Tipologia),
+                        paste0("<b>", "Eventi: ", "</b>", cinema_data$Eventi),
+                        paste0("<b>", "Capienza: ", "</b>", cinema_data$Capienza),
+                        paste0(cinema_data$Thumbnails),
+                        paste0(cinema_data$Immagini_originali),
+                        paste0("<b>", "Data immagine: ", "</b>", cinema_data$Data_foto),
+                        paste0("</div>"))
+
+##cinema icons
+cinema_icons <- makeAwesomeIcon(icon = 'blackboard', markerColor = 'green')
+
+##dancing csv
+dancing_data <- read.csv("dancing.csv")
+
+##dancing html popup
+dancing_content <- paste(sep = "<br/>",
+                        paste0("<div class='leaflet-popup-scrolled' style='max-width:600px;max-height:400px'>"),
+                        paste0("<b>", "Nome: ", "</b>", dancing_data$Nome),
+                        paste0("<b>", "Organizzatore: ", "</b>", dancing_data$Organizzatore),
+                        paste0("<b>", "Indirizzo: ", "</b>", dancing_data$Indirizzo),
+                        paste0("<b>", "Tipologia: ", "</b>", dancing_data$Tipologia),
+                        paste0("<b>", "Eventi: ", "</b>", dancing_data$Eventi),
+                        paste0("<b>", "Capienza: ", "</b>", dancing_data$Capienza),
+                        paste0(dancing_data$Thumbnails),
+                        paste0(dancing_data$Immagini_originali),
+                        paste0("<b>", "Data immagine: ", "</b>", dancing_data$Data_foto),
+                        paste0("</div>"))
+##dancing icons
+dancing_icons <- makeAwesomeIcon(icon = 'user', markerColor = 'beige')
+
+
+##night csv
+night_data <- read.csv("night.csv")
+
+##night html popup
+night_content <- paste(sep = "<br/>",
+                         paste0("<div class='leaflet-popup-scrolled' style='max-width:600px;max-height:400px'>"),
+                         paste0("<b>", "Nome: ", "</b>", night_data$Nome),
+                         paste0("<b>", "Organizzatore: ", "</b>", night_data$Organizzatore),
+                         paste0("<b>", "Indirizzo: ", "</b>", night_data$Indirizzo),
+                         paste0("<b>", "Tipologia: ", "</b>", night_data$Tipologia),
+                         paste0("<b>", "Eventi: ", "</b>", night_data$Eventi),
+                         paste0("<b>", "Capienza: ", "</b>", night_data$Capienza),
+                         paste0(night_data$Thumbnails),
+                         paste0(night_data$Immagini_originali),
+                         paste0("<b>", "Data immagine: ", "</b>", night_data$Data_foto),
+                         paste0("</div>"))
+##dancing icons
+night_icons <- makeAwesomeIcon(icon = 'glass', markerColor = 'orange')
+
+##whisky csv
+whisky_data <- read.csv("whisky.csv")
+
+##whisky html popup
+whisky_content <- paste(sep = "<br/>",
+                       paste0("<div class='leaflet-popup-scrolled' style='max-width:600px;max-height:400px'>"),
+                       paste0("<b>", "Nome: ", "</b>", whisky_data$Nome),
+                       paste0("<b>", "Organizzatore: ", "</b>", whisky_data$Organizzatore),
+                       paste0("<b>", "Indirizzo: ", "</b>", whisky_data$Indirizzo),
+                       paste0("<b>", "Tipologia: ", "</b>", whisky_data$Tipologia),
+                       paste0("<b>", "Eventi: ", "</b>", whisky_data$Eventi),
+                       paste0("<b>", "Capienza: ", "</b>", whisky_data$Capienza),
+                       paste0(whisky_data$Thumbnails),
+                       paste0(whisky_data$Immagini_originali),
+                       paste0("<b>", "Data immagine: ", "</b>", whisky_data$Data_foto),
+                       paste0("</div>"))
+
+##whisky icons
+whisky_icons <- makeAwesomeIcon(icon = 'volume-up', markerColor = 'purple')
+
+
+
+##Events palette
+palette_venues <- colorNumeric("YlGn", venues_data$Eventi)
+##Capacity palette
+palette_capacity <- colorNumeric("YlOrRd", domain = venues_data$Capienza)
+
+
+##night cerchie csv
+night_cerchie_data <- read.csv("night_cerchie.csv")
+
+## Palette cerchie night
+palette_night_cerchie <- colorFactor(palette = c("#F7F4F4","#F22814", "#14DEF2" ), domain = night_cerchie_data$Percentuale)
+
+##teatri cerchie csv
+teatri_cerchie_data <- read.csv("teatri_cerchie.csv")
+
+## Palette cerchie teatri
+palette_teatri_cerchie <- colorFactor(palette = c("#F7F4F4","#F22814", "#14DEF2" ), domain = teatri_cerchie_data$Percentuale)
+
+## Palette cerchie
+palette_cerchie <- colorFactor(palette = c("#14DEF2", "#F22814"), domain = Cerchie$id)
+
+##cinema cerchie csv
+cinema_cerchie_data <- read.csv("cinema_cerchie.csv")
+
+## Palette cerchie cinema
+palette_cinema_cerchie <- colorFactor(palette = c("#F7F4F4","#F22814", "#14DEF2" ), domain = cinema_cerchie_data$Percentuale)
+
+##whisky cerchie csv
+whisky_cerchie_data <- read.csv("whisky_cerchie.csv")
+
+## Palette cerchie cinema
+palette_whisky_cerchie <- colorFactor(palette = c("#F7F4F4","#F22814", "#14DEF2" ), domain = whisky_cerchie_data$Percentuale)
+
+##dancing cerchie csv
+dancing_cerchie_data <- read.csv("dancing_cerchie.csv")
+
+## Palette cerchie dancing
+palette_dancing_cerchie <- colorFactor(palette = c("#F7F4F4","#F22814", "#14DEF2" ), domain = dancing_cerchie_data$Percentuale)
+
+##charts cerchie csv
+cerchie_charts_data <- read.csv("cerchie_charts.csv")
+
+## Palette charts cerchie
+palette__cerchie_charts = c("#fd0090", "#0090fd","#0012fd", "#fd0012", "#900C3F")
+
+
+## PART 2 - IN THIS PART THE CODE ADDS ELEMENT ON THE MAP LIKE POLYGONS, POINTS AND IMAGES.
+
+m <- leaflet(options = leafletOptions(preferCanvas = TRUE)) %>%
+  ## Basemap
+  ##addTiles(tile)        %>%
+  addProviderTiles(providers$CartoDB.Positron, options = providerTileOptions(
+    updateWhenZooming = FALSE,      
+    updateWhenIdle = TRUE)      )  %>%
+  
+
+  
+  ## Add a zoom reset button
+  addResetMapButton() %>%
+  
+  ## Add a coordinates reader
+  leafem::addMouseCoordinates() %>%
+  ## define the view
+  setView(lng = 9.18835, 
+          lat = 45.4610, 
+          zoom = 13 ) %>%
+  
+  
+  
+  ##Polygons Night 
+  addPolygons(data = Night_Club,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = "goldenrod",
+              group = "Night Club",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons cinema
+  addPolygons(data = Cinema,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_cinema(tipologia),
+              group = "Cinema",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons teatri
+  addPolygons(data = Teatri,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_teatri(tipologia),
+              group = "Teatri",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons whisky
+  addPolygons(data = Whisky,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_whisky(tipologia),
+              group = "Whisky a go-go",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons dancing
+  addPolygons(data = Dancing,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_dancing(tipologia),
+              group = "Dancing",
+              label = ~paste(nome)) %>%
+  ##Polygons Night 
+  addPolygons(data = Night_Club,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_night_club(tipologia),
+              group = "Night Club",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons cinema_2
+  addPolygons(data = Cinema,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_cinema(tipologia),
+              group = "Totale",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons teatri_2
+  addPolygons(data = Teatri,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_teatri(tipologia),
+              group = "Totale",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons whisky_2
+  addPolygons(data = Whisky,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_whisky(tipologia),
+              group = "Totale",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons dancing_2
+  addPolygons(data = Dancing,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_dancing(tipologia),
+              group = "Totale",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons Night_2 
+  addPolygons(data = Night_Club,
+              stroke = FALSE, 
+              smoothFactor = 0.2, 
+              fillOpacity = 1,
+              color = ~palette_night_club(tipologia),
+              group = "Totale",
+              label = ~paste(nome)) %>%
+  
+  ##Polygons Cerchie
+  addPolygons(data = Cerchie,
+              weight = 1,
+              opacity = 1,
+              stroke = TRUE,
+              fillColor = "red",
+              smoothFactor = 0.2, 
+              fillOpacity = 0,
+              color = ~palette_cerchie(id),
+              group = "Cerchie"
+              ) %>%
+  
+  
+  
+  
+  ## Markers totale
+  addAwesomeMarkers(data = venues_data, 
+                    lng = ~Longitude,
+                    lat = ~Latitude,
+                    popup = c(venues_content), 
+                    group = "Totale",
+                    options = popupOptions(maxWidth = 100, maxHeight = 150), 
+                    clusterOptions = markerClusterOptions())%>%
+  
+  
+  ## Markers teatri
+  addAwesomeMarkers(data = teatri_data, 
+                    lng = ~Longitude,
+                    lat = ~Latitude,
+                    icon = teatri_icons,
+                    popup = c(teatri_content), 
+                    group = "Teatri",
+                    options = popupOptions(maxWidth = 100, maxHeight = 150), 
+                    clusterOptions = markerClusterOptions())%>%
+  ## Markers cinema
+  addAwesomeMarkers(data = cinema_data, 
+                    lng = ~Longitude,
+                    lat = ~Latitude,
+                    icon = cinema_icons,
+                    popup = c(cinema_content), 
+                    group = "Cinema",
+                    options = popupOptions(maxWidth = 100, maxHeight = 150), 
+                    clusterOptions = markerClusterOptions())%>%
+  
+  ## Markers dancing
+  addAwesomeMarkers(data = dancing_data, 
+                    lng = ~Longitude,
+                    lat = ~Latitude,
+                    popup = c(dancing_content), 
+                    icon = dancing_icons,
+                    group = "Dancing",
+                    options = popupOptions(maxWidth = 100, maxHeight = 150), 
+                    clusterOptions = markerClusterOptions())%>%
+  
+  ## Markers night
+  addAwesomeMarkers(data = night_data, 
+                    lng = ~Longitude,
+                    lat = ~Latitude,
+                    icon = night_icons,
+                    popup = c(night_content), 
+                    group = "Night Club",
+                    options = popupOptions(maxWidth = 100, maxHeight = 150), 
+                    clusterOptions = markerClusterOptions())%>%
+  
+  
+  ## Markers whisky
+  addAwesomeMarkers(data = whisky_data, 
+                    lng = ~Longitude,
+                    lat = ~Latitude,
+                    icon = whisky_icons,
+                    popup = c(whisky_content), 
+                    group = "Whisky a go-go",
+                    options = popupOptions(maxWidth = 100, maxHeight = 150), 
+                    clusterOptions = markerClusterOptions())%>%
+  
+  ## Circles markers events
+  addCircleMarkers(data = venues_data, 
+                   lng = ~Longitude,
+                   lat = ~Latitude,
+                   fillColor = ~palette_venues(Eventi),
+                   color = "black",
+                   weight = 1,
+                   radius = ~sqrt(venues_data$Eventi),
+                   stroke = TRUE,
+                   fillOpacity = 0.5,
+                   group = "Events",
+                   label = ~paste(venues_data$Eventi 
+                   )) %>%
+  
+  ## Circle markers capacity
+  addCircleMarkers(data = venues_data, 
+                   lng = ~Longitude,
+                   lat = ~Latitude,
+                   fillColor = ~palette_capacity(Capienza),
+                   color = "black",
+                   weight = 1,
+                   radius = ~sqrt(venues_data$Capienza) - 10,
+                   stroke = TRUE,
+                   fillOpacity = 0.5,
+                   group = "Capacity",
+                   label = ~paste(venues_data$Capienza 
+                   )) %>%
+  ##Heatmap
+  addHeatmap(data = venues_data,
+             lng = ~Longitude,
+             lat = ~Latitude, 
+              group = "Heatmap",
+                minOpacity = 0.05, 
+                max = 1, 
+                radius = 15,
+                blur = 15,
+                intensity = 0.6,
+                cellSize = 10,
+                ) %>%
+                
+  
+  
+  ##Legend nights
+  addLegend("bottomleft", 
+            pal = palette_night_club, 
+            values = Night_Club$tipologia,
+            title = "Night Club:",
+            labFormat = labelFormat(suffix = ""),
+            opacity = 1,
+            group = "Night Club") %>%
+  
+  ##Legend teatri
+  addLegend("bottomleft", 
+            pal = palette_teatri, 
+            values = Teatri$tipologia,
+            title = "Teatri:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Teatri") %>%
+  
+  ##Legend cinema
+  addLegend("bottomleft", 
+            pal = palette_cinema, 
+            values = Cinema$tipologia,
+            title = "Cinema:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Cinema") %>%
+  
+  
+  ##Legend whisky
+  addLegend("bottomleft", 
+            pal = palette_whisky, 
+            values = Whisky$tipologia,
+            title = "Whisky a go-go:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Whisky a go-go") %>%
+  
+  ##Legend dancing
+  addLegend("bottomleft", 
+            pal = palette_dancing, 
+            values = Dancing$tipologia,
+            title = "Dancing:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Dancing") %>%
+  
+  
+  
+  ##Legend events
+  #addLegend("bottomleft", 
+            #pal = palette_venues, 
+            #values = venues_data$Eventi,
+            #title = "Events:",
+            #labFormat = labelFormat(suffix = " "),
+            #opacity = 1,
+            #group = "Events") %>%
+  
+  
+  ##Legend capacity
+  #addLegend("bottomleft", 
+            #pal = palette_capacity, 
+            #values = venues_data$Eventi,
+            #title = "Capacity:",
+            #labFormat = labelFormat(suffix = " "),
+            #opacity = 1,
+            #group = "Capacity") %>% 
+  
+  
+  
+  ##Legend cerchie night
+  addLegend("bottomright", 
+            pal = palette_night_cerchie,
+            values = night_cerchie_data$Percentuale,
+            title = "Night Club:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Cerchie") %>%
+  
+  ##Legend cerchie teatri
+  addLegend("bottomright", 
+            pal = palette_teatri_cerchie,
+            values = teatri_cerchie_data$Percentuale,
+            title = "Teatri:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Cerchie") %>%
+  
+  ##Legend cerchie cinema
+  addLegend("bottomright", 
+            pal = palette_cinema_cerchie,
+            values = cinema_cerchie_data$Percentuale,
+            title = "Cinema:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Cerchie") %>%
+  
+  ##Legend cerchie Whisky
+  addLegend("bottomleft", 
+            pal = palette_whisky_cerchie,
+            values = whisky_cerchie_data$Percentuale,
+            title = "Whisky a go-go:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Cerchie") %>%
+  
+  ##Legend cerchie dancing
+  addLegend("bottomleft", 
+            pal = palette_dancing_cerchie,
+            values = dancing_cerchie_data$Percentuale,
+            title = "Dancing:",
+            labFormat = labelFormat(suffix = " "),
+            opacity = 1,
+            group = "Cerchie") %>%
+  
+  ##addMinicharts(
+    #cerchie_charts_data$Latitude, 
+    #cerchie_charts_data$Longitude,
+    #chartdata = select(cerchie_charts_data, Teatri, Night, Cinema, Whisky, Dancing),
+    #colorPalette = palette__cerchie_charts,
+    #group = "Cerchie",
+    #width = 45, 
+    #height = 45
+  #)  %>%
+  
+  ## Add a legend with the credits
+  addLegend("topright", 
+            
+            colors = c("trasparent"),
+            labels=c("Martin Nicastro - nicastromartin@gmail.com"),
+            
+            title="Milan 1958-1962: Music Topography of a Forgotten City") %>%
+  
+  
+  ## PART 3 - IN THIS PART THE CODE MANAGE THE LAYERS' SELECTOR
+  
+  ## Add the layer selector which allows you to navigate the possibilities offered by this map
+  
+  addLayersControl(baseGroups = c("Totale",
+                                  "Teatri",
+                                  "Night Club",
+                                  "Cinema",
+                                  "Dancing",
+                                  "Whisky a go-go",
+                                  "Empty layer"),
+    
+                 overlayGroups = c(  "Events",
+                                     "Capacity",
+                                     "Cerchie",
+                                     "Heatmap"),
+                   
+                   
+                   options = layersControlOptions(collapsed = TRUE)) %>%
+  
+  ## Hide the layers that the users can choose as they like
+  hideGroup(c("Teatri",
+              "Night Club",
+              "Cinema",
+              "Dancing",
+              "Whisky a go-go",
+              "Events",
+              "Capacity",
+              "Cerchie",
+              "Heatmap"))
+              
+              
+              
+              
+
+## Show the map  
+m

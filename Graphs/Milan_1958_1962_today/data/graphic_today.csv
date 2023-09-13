@@ -1,0 +1,19 @@
+percentuale,stato,categoria
+42.86,attivo,Cinema Teatro
+57.14,non attivo,Cinema Teatro
+0,attivo,Dancing
+100,non attivo,Dancing
+5.13,attivo,Night club
+94.87,non attivo,Night club
+0,attivo,Palazzetto
+100,non attivo,Palazzetto
+44.12,attivo,Sala da concerto
+55.88,non attivo,Sala da concerto
+0,attivo,Teatro
+100,non attivo,Teatro
+46.67,attivo,Teatro/Sala da concerto
+53.33,non attivo,Teatro/Sala da concerto
+0,attivo,Teatro/Sala da concerto/Dancing
+100,non attivo,Teatro/Sala da concerto/Dancing
+0,attivo,Whisky a go-go
+100,non attivo,Whisky a go-go

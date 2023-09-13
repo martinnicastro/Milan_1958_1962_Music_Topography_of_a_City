@@ -1,0 +1,28 @@
+{
+    "id": "210090EA",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1671617580271.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "id": "bb0ca387d6ab41a1b79fcd63ac1e29d6",
+        "name": "Cinema",
+        "title": "Cinema",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1219876904944,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1671617580271,
+    "read_only": false,
+    "read_only_alternatives": []
+}
